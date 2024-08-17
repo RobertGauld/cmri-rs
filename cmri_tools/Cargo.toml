@@ -1,0 +1,53 @@
+[package]
+name = "cmri_tools"
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.81"
+description = "Tools for experimenting with CMRInet"
+keywords = ["CMRInet", "C/MRI", "CMRI", "model-railway"]
+categories = ["network-programming"] # See: https://crates.io/category_slugs
+readme = "README.md"
+license-file = "LICENSE.md"
+repository = "https://github.com/RobertGauld/cmri-rs/cmri_tools"
+resolver = "2"
+
+[features]
+experimenter = ["cmri/experimenter"]
+
+[dependencies]
+cmri = { path = "../cmri", features = ["std", "serde"] }
+tokio = { version = "1.39.3", features = ["tracing", "rt-multi-thread", "sync", "time", "net", "io-util", "macros"] }
+tokio-serial = "5.4.4"
+tracing = "0.1.40"
+tracing-subscriber = { version = "0.3.18", default-features = false, features = ["fmt", "ansi", "env-filter", "tracing-log"] }
+clap = { version = "4.5.16", features = ["cargo"] }
+anyhow = { version = "1.0.86", features = ["backtrace"] }
+egui = "0.28.1"
+egui_extras = "0.28.1"
+egui_plot = "0.28.1"
+egui-modal = "0.4.0"
+rfd = "0.14.1"
+dirs = "5.0.1"
+readable = { version = "0.16.0", features = ["num"] }
+readable_byte = "0.1.14"
+serde = { version = "1.0.208", features = ["derive"] }
+serde_json = "1.0.125"
+
+# Disable accesskit for mac
+[target.'cfg(not(target_os = "macos"))'.dependencies]
+eframe = "0.28.1"
+[target.'cfg(target_os = "macos")'.dependencies]
+eframe = { version = "0.28.1", default-features = false , features = ["default_fonts", "glow"] }
+
+
+[build-dependencies]
+clap = { version = "4.5.16", features = ["cargo"] }
+clap_complete = "4.5.18"
+
+[dev-dependencies]
+tokio-test = "0.4.4"
+rand = "0.8.5"
+indoc = "2.0.5"
+
+[lints]
+workspace = true

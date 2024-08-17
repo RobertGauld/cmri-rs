@@ -1,0 +1,176 @@
+name: Commit Checks (lib)
+
+on:
+  push:
+    branches:
+    - main
+    - 'issue[0-9]+'
+    paths:
+    - cmri/src/**
+    - .github/workflows/commit_checks-cmri.yml
+  pull_request:
+    branches:
+    - main
+    - 'issue[0-9]+'
+    types:
+    - opened
+    - edited
+    - reopened
+    paths:
+    - cmri/src/**
+    - .github/workflows/commit_checks-cmri.yml
+
+env:
+  CARGO_TERM_COLOR: always
+  RUSTFLAGS: "-Dwarnings"
+
+defaults:
+  run:
+    working-directory: ./cmri
+
+jobs:
+  test:
+    name: Test ${{ matrix.target }} (${{ matrix.toolchain }}) [${{ matrix.features }}]
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 5
+    strategy:
+      fail-fast: false
+      matrix:
+        toolchain:
+        - stable
+        - nightly
+        target:
+        # All Tier 1 from https://doc.rust-lang.org/nightly/rustc/platform-support.html
+        - x86_64-unknown-linux-gnu  # 64-bit Linux (kernel 3.2+, glibc 2.17+)
+        - aarch64-unknown-linux-gnu # ARM64 Linux (kernel 4.1, glibc 2.17+)
+        - i686-unknown-linux-gnu    # 32-bit Linux (kernel 3.2+, glibc 2.17+)
+        - x86_64-pc-windows-gnu     # 64-bit MinGW (Windows 7+)
+        - x86_64-pc-windows-msvc    # 64-bit MSVC (Windows 7+)
+        - i686-pc-windows-gnu       # 32-bit MinGW (Windows 7+)
+        - i686-pc-windows-msvc      # 32-bit MSVC (Windows 7+)
+        - x86_64-apple-darwin       # 64 bit macOS (10.7+, Lion+)
+        include:
+        # Add correct runner to target
+        - { runner: ubuntu-latest,  target: x86_64-unknown-linux-gnu }
+        - { runner: ubuntu-latest,  target: aarch64-unknown-linux-gnu }
+        - { runner: ubuntu-latest,  target: i686-unknown-linux-gnu }
+        - { runner: windows-latest, target: x86_64-pc-windows-gnu }
+        - { runner: windows-latest, target: x86_64-pc-windows-msvc }
+        - { runner: windows-latest, target: i686-pc-windows-gnu }
+        - { runner: windows-latest, target: i686-pc-windows-msvc }
+        - { runner: macos-latest,   target: x86_64-apple-darwin }
+    steps:
+    - uses: actions/checkout@v3
+    - name: Use ${{ matrix.toolchain }} toolchain
+      run: rustup default ${{ matrix.toolchain }}
+    - name: Run tests (no default features)
+      run: cargo test --verbose ${{ matrix.features }} --no-default-features
+    - name: Run tests (all features)
+      run: cargo test --verbose ${{ matrix.features }} --all-features
+    - name: Run tests (std feature)
+      run: cargo test --verbose --features std
+    - name: Run tests (serde feature)
+      run: cargo test --verbose --features serde
+    - name: Run tests (experimenter features)
+      run: cargo test --verbose --features experimenter
+    - name: Run tests (std, serde features)
+      run: cargo test --verbose --features std,serde
+    - name: Run tests (std, experimenter features)
+      run: cargo test --verbose --features std,experimenter
+    - name: Run tests (serde, experimenter features)
+      run: cargo test --verbose --features serde,experimenter
+
+  build:
+    name: Build ${{ matrix.target }} (${{ matrix.toolchain }}) [${{ matrix.features }}]
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    strategy:
+      fail-fast: false
+      matrix:
+        toolchain:
+        - stable
+        - nightly
+        features:
+        - "--no-default-features"
+        - "--all-features"
+        target:
+        # All Tier 2 with Host Tools from https://doc.rust-lang.org/nightly/rustc/platform-support.html
+        - aarch64-apple-darwin
+        - aarch64-pc-windows-msvc
+        - aarch64-unknown-linux-musl
+        - arm-unknown-linux-gnueabi
+        - arm-unknown-linux-gnueabihf
+        - armv7-unknown-linux-gnueabihf
+        - loongarch64-unknown-linux-gnu
+        - powerpc-unknown-linux-gnu
+        - powerpc64-unknown-linux-gnu
+        - powerpc64le-unknown-linux-gnu
+        - riscv64gc-unknown-linux-gnu
+        - s390x-unknown-linux-gnu
+        - x86_64-unknown-freebsd
+        - x86_64-unknown-illumos
+        - x86_64-unknown-linux-musl
+        - x86_64-unknown-netbsd
+        # Selected Tier 2 without Host Tools
+        - wasm32-unknown-emscripten
+        - wasm32-unknown-unknown
+        - wasm32-wasip1
+    steps:
+    - uses: actions/checkout@v3
+    - name: Use ${{ matrix.toolchain }} toolchain
+      run: rustup default ${{ matrix.toolchain }}
+    - name: Install ${{ matrix.target }} target
+      run: rustup target add ${{ matrix.target }}
+    - name: Build
+      run: cargo build --verbose --release ${{ matrix.features }} --target ${{ matrix.target }}
+
+  build-nostd:
+    name: Build ${{ matrix.target }} (${{ matrix.toolchain }}) [${{ matrix.features }}]
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    strategy:
+      fail-fast: false
+      matrix:
+        toolchain:
+        - stable
+        - nightly
+        features:
+        - "--no-default-features --features serde,experimenter" # All except std
+        - "--no-default-features"
+        target:
+        - mips-unknown-linux-gnu
+        - mips64-unknown-linux-gnuabi64
+        - mips64el-unknown-linux-gnuabi64
+        - mipsel-unknown-none
+        - avr-unknown-gnu-atmega328
+    steps:
+    - uses: actions/checkout@v3
+    - name: Use ${{ matrix.toolchain }} toolchain
+      run: rustup default ${{ matrix.toolchain }}
+    - name: Add rust source component
+      run: rustup component add rust-src
+    - name: Build
+      run: cargo build -Z build-std=core --verbose --release ${{ matrix.features }} --target ${{ matrix.target }}
+
+  msrv:
+    name: Minimum Supported Rust Version
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+    - uses: actions/checkout@v3
+    - name: Install semver-checks
+      run: cargo install cargo-msrv --locked
+    - name: Check
+      run: cargo msrv verify
+
+# TODO semver-check
+#  semver:
+#    name: Semantic Versioning
+#    runs-on: ubuntu-latest
+#    timeout-minutes: 5
+#    steps:
+#    - uses: actions/checkout@v3
+#    - name: Install semver-checks
+#      run: cargo install cargo-semver-checks --locked
+#    - name: Check
+#      run: cargo semver-checks check-release --verbose

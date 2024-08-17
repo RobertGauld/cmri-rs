@@ -1,0 +1,106 @@
+name: Commit Checks
+
+on:
+  push:
+    branches:
+    - main
+    - 'issue[0-9]+'
+  pull_request:
+    branches:
+    - main
+    - 'issue[0-9]+'
+    types:
+    - opened
+    - edited
+    - reopened
+
+env:
+  CARGO_TERM_COLOR: always
+  RUSTFLAGS: "-Dwarnings"
+
+jobs:
+  bench:
+    name: Benchmarks
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    defaults:
+      run:
+        working-directory: ./cmri
+    steps:
+    - uses: actions/checkout@v3
+    - name: Use nightly toolchain
+      run: rustup default nightly
+    - name: Run benchmarks
+      run: cargo bench --all-features
+
+  docs:
+    name: Docs
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    strategy:
+      fail-fast: false
+      matrix:
+        toolchain:
+        #- stable
+        - nightly
+    steps:
+    - uses: actions/checkout@v3
+    - name: Use ${{ matrix.toolchain }} toolchain
+      run: rustup default ${{ matrix.toolchain }}
+    - name: Build Docs
+      run: cargo doc --all-features --no-deps --document-private-items
+
+  clippy:
+    name: Clippy
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    strategy:
+      fail-fast: false
+      matrix:
+        toolchain:
+        #- stable
+        - nightly
+        features:
+        - "--no-default-features"
+        - "--all-features"
+        - "--no-default-features --features std"
+        - "--no-default-features --features serde"
+        - "--no-default-features --features experimenter"
+        - "--no-default-features --features std,serde"
+        - "--no-default-features --features std,experimenter"
+        - "--no-default-features --features serde,experimenter"
+    steps:
+    - uses: actions/checkout@v3
+    - name: Use ${{ matrix.toolchain }} toolchain
+      run: rustup default ${{ matrix.toolchain }}
+    - name: Install clippy
+      run: rustup component add clippy
+    - name: Run checks
+      run: |
+        cargo +nightly clippy ${{ matrix.features }} --all-targets --no-deps -- \
+        -W clippy::pedantic \
+        -W clippy::nursery \
+        -W clippy::unwrap_used \
+        -W clippy::missing_const_for_fn \
+        -W clippy::cargo \
+        -A clippy::multiple_crate_versions
+
+  audit-crates:
+    name: Audit Crates
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+    - uses: actions/checkout@v3
+    - name: Install cargo-audit
+      run: cargo install cargo-audit --locked
+    - name: Check
+      run: cargo audit --deny warnings --deny unmaintained --deny unsound --deny yanked
+
+  merge-conflicts:
+    name: Merge Conflicts
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+    - uses: actions/checkout@v3
+    - name: Check
+      run: "[ $(grep -rIHn '^<<<<<<<[ \t]'; echo $?) == 1 ]"

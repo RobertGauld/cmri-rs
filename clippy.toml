@@ -1,0 +1,5 @@
+allow-private-module-inception = true
+check-private-items = true
+doc-valid-idents = ["CMRInet", ".."]
+allow-unwrap-in-tests = true
+allow-expect-in-tests = true

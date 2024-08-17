@@ -1,0 +1,26 @@
+name: Release (lib)
+
+on:
+  release:
+    types:
+    - released
+
+env:
+  CARGO_TERM_COLOR: always
+  GH_TOKEN: ${{ github.token }}
+
+defaults:
+  run:
+    working-directory: ./cmri
+
+jobs:
+  package:
+    name: Package
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+    - uses: actions/checkout@v3
+    - name: Package
+      run: cargo package
+    - name: Attach
+      run: gh release upload  --repo "${{ github.repository }}" "${{ github.ref_name }}" ../target/package/cmri-*.crate

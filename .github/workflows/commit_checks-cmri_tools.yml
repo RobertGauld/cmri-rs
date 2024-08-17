@@ -1,0 +1,60 @@
+name: Commit Checks (tools)
+
+on:
+  push:
+    branches:
+    - main
+    - 'issue[0-9]+'
+    paths:
+    - cmri/src/**
+    - cmri_tools/src/**
+    - .github/workflows/commit_checks-cmri_tools.yml
+  pull_request:
+    branches:
+    - main
+    - 'issue[0-9]+'
+    types:
+    - opened
+    - edited
+    - reopened
+    paths:
+    - cmri/src/**
+    - cmri_tools/src/**
+    - .github/workflows/commit_checks-cmri_tools.yml
+
+env:
+  CARGO_TERM_COLOR: always
+  RUSTFLAGS: "-Dwarnings"
+
+defaults:
+  run:
+    working-directory: ./cmri_tools
+
+jobs:
+  test:
+    name: Test ${{ matrix.target }}
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+        # All Tier 1 (except Windows using gnu) from https://doc.rust-lang.org/nightly/rustc/platform-support.html
+        - { target: x86_64-unknown-linux-gnu,  runner: ubuntu-latest,  command: "cargo" } # 64-bit Linux
+        - { target: aarch64-unknown-linux-gnu, runner: ubuntu-latest,  command: "cross" } # ARM64 Linux
+        - { target: i686-unknown-linux-gnu,    runner: ubuntu-latest,  command: "cross" } # 32-bit Linux
+        - { target: x86_64-pc-windows-msvc,    runner: windows-latest, command: "cargo" } # 64-bit Windows
+        - { target: i686-pc-windows-msvc,      runner: windows-latest, command: "cargo" } # 32-bit Windows
+        - { target: x86_64-apple-darwin,       runner: macos-latest,   command: "cargo" } # 64-bit macOS
+        - { target: aarch64-apple-darwin,      runner: macos-latest,   command: "cargo" } # ARM64 macOS
+    steps:
+    - uses: actions/checkout@v3
+    - name: Add Target
+      run: rustup target add ${{ matrix.target }}
+    - name: Install Cross
+      if: matrix.command == 'cross'
+      run: cargo install cross --locked
+    - name: Run tests
+      run: ${{ matrix.command }} test --verbose --target ${{ matrix.target }}
+    - name: Run tests (experimenter feature)
+      run: ${{ matrix.command }} test --features experimenter --verbose --target ${{ matrix.target }}

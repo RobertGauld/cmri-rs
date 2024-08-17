@@ -1,0 +1,40 @@
+name: Commit Checks (test nodes)
+
+on:
+  push:
+    branches:
+    - main
+    - 'issue[0-9]+'
+    paths:
+    - cmri/src/**
+    - test_nodes/src/**
+    - .github/workflows/commit_checks-test_nodes.yml
+  pull_request:
+    branches:
+    - main
+    - 'issue[0-9]+'
+    types:
+    - opened
+    - edited
+    - reopened
+    paths:
+    - cmri/src/**
+    - test_nodes/src/**
+    - .github/workflows/commit_checks-test_nodes.yml
+
+env:
+  CARGO_TERM_COLOR: always
+
+defaults:
+  run:
+    working-directory: ./test_nodes
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+    - uses: actions/checkout@v3
+    - name: Build
+      run: cargo build --verbose

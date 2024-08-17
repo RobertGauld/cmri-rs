@@ -1,0 +1,36 @@
+[package]
+name = "cmri"
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.81"
+description = "Pure-Rust decoding/encoding of packets for CMRInet"
+keywords = ["CMRInet", "C/MRI", "CMRI", "model-railway"]
+categories = ["no-std", "no-std::no-alloc", "network-programming"] # See: https://crates.io/category_slugs
+readme = "README.md"
+license-file = "LICENSE.md"
+repository = "https://github.com/RobertGauld/cmri-rs/cmri"
+documentation = "https://docs.rs/cmri/latest/cmri"
+exclude = ["test.sh"]
+
+[features]
+default = ["std"]
+std = ["serde?/std"]
+experimenter = []
+
+[dependencies]
+log = "0.4.0"
+serde = { version = "1.0", default-features = false, features = ["derive"], optional = true }
+# thiserror = "0" # Use when it has no_std support, expected when https://doc.rust-lang.org/unstable-book/library-features/error-in-core.html in stable
+thiserror = { version = "2.0", package = "thiserror-no-std" }
+bitflags = "2.6"
+paste = "1.0"
+
+[dev-dependencies]
+serde_test = "1.0"
+
+[package.metadata.docs.rs]
+all-features = true
+rustdoc-args = ["--cfg", "docsrs"]
+
+[lints]
+workspace = true
