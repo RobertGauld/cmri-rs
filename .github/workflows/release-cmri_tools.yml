@@ -32,6 +32,8 @@ jobs:
         - { target: "aarch64-apple-darwin",      runner: "macos-latest",   command: "cargo", zip_name: "macos-arm64.zip",    zip_label: "macOS (ARM64) 11.0+, Big Sur+",                gem_command: "gem" }
     steps:
     - uses: actions/checkout@v3
+    - name: Update rust
+      run: rustup update
     - name: Install Cross
       if: matrix.command == 'cross'
       run: cargo install cross --locked
