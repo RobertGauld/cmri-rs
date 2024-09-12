@@ -6,6 +6,7 @@ on:
     - main
     - 'issue[0-9]+'
     paths:
+    - cmri/Cargo.toml
     - cmri/src/**
     - .github/workflows/commit_checks-cmri.yml
   pull_request:

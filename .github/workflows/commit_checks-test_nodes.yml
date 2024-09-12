@@ -7,7 +7,9 @@ on:
     - 'issue[0-9]+'
     paths:
     - cmri/src/**
+    - cmri/Cargo.toml
     - test_nodes/src/**
+    - test_nodes/Cargo.toml
     - .github/workflows/commit_checks-test_nodes.yml
   pull_request:
     branches:
