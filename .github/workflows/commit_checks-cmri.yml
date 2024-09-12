@@ -172,14 +172,13 @@ jobs:
     - name: Check
       run: cargo msrv verify
 
-# TODO semver-check
-#  semver:
-#    name: Semantic Versioning
-#    runs-on: ubuntu-latest
-#    timeout-minutes: 5
-#    steps:
-#    - uses: actions/checkout@v3
-#    - name: Install semver-checks
-#      run: cargo install cargo-semver-checks --locked
-#    - name: Check
-#      run: cargo semver-checks check-release --verbose
+  semver:
+    name: Semantic Versioning
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+    - uses: actions/checkout@v3
+    - name: Install semver-checks
+      run: cargo install cargo-semver-checks --locked
+    - name: Check
+      run: cargo semver-checks check-release --verbose
