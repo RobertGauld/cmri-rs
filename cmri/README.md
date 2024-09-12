@@ -2,7 +2,7 @@
 
 [![Docs](https://docs.rs/cmri/badge.svg)](https://docs.rs/cmri/latest/cmri/)
 [![Crates](https://img.shields.io/crates/v/cmri.svg)](https://crates.io/crates/cmri)
-[![Checks](https://github.com/RobertGauld/test/actions/workflows/commit_checks-cmri.yml/badge.svg?branch=main)](https://github.com/RobertGauld/test/actions/workflows/commit_checks-cmri.yml)
+[![Checks](https://github.com/RobertGauld/cmri-rs/actions/workflows/commit_checks-cmri.yml/badge.svg?branch=main)](https://github.com/RobertGauld/cmri-rs/actions/workflows/commit_checks-cmri.yml)
 
 Pure-Rust decoding/encoding of packets for CMRInet (as defined in [NMRA Specification LCS-9.10.1](https://www.nmra.org/sites/default/files/standards/sandrp/Other_Specifications/lcs-9.10.1_cmrinet_v1.1.pdf)).
 

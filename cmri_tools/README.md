@@ -1,7 +1,7 @@
 # CMRI Tools
 
 [![Crates](https://img.shields.io/crates/v/cmri_tools.svg)](https://crates.io/crates/cmri_tools)
-[![Checks](https://github.com/RobertGauld/test/actions/workflows/commit_checks-cmri_tools.yml/badge.svg?branch=main)](https://github.com/RobertGauld/test/actions/workflows/commit_checks-cmri_tools.yml)
+[![Checks](https://github.com/RobertGauld/cmri-rs/actions/workflows/commit_checks-cmri_tools.yml/badge.svg?branch=main)](https://github.com/RobertGauld/cmri-rs/actions/workflows/commit_checks-cmri_tools.yml)
 
 A collection of tools I found useful for experimenting with CMRInet (as defined in [NMRA Specification LCS-9.10.1](https://www.nmra.org/sites/default/files/standards/sandrp/Other_Specifications/lcs-9.10.1_cmrinet_v1.1.pdf)).
 
