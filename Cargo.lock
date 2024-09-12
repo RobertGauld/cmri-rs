@@ -964,13 +964,26 @@ dependencies = [
 ]
 
 [[package]]
+name = "cmri"
+version = "0.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "e6d7ea2cdc8ba5008582d52d811093aa2cd524589e97c2fd5ed7ef30dae2406b"
+dependencies = [
+ "bitflags 2.6.0",
+ "log",
+ "paste",
+ "serde",
+ "thiserror-no-std",
+]
+
+[[package]]
 name = "cmri_tools"
 version = "0.1.0"
 dependencies = [
  "anyhow",
  "clap",
  "clap_complete",
- "cmri",
+ "cmri 0.1.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "dirs",
  "eframe",
  "egui",
