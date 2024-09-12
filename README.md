@@ -6,7 +6,7 @@ A selection of crates for working with CMRInet as defined in [NMRA Specification
 
 ## cmri
 
-[![Docs](https://docs.rs/pg_filters/badge.svg)](https://docs.rs/pg_filters/latest/pg_filters/)
+[![Docs](https://docs.rs/cmri/badge.svg)](https://docs.rs/cmri/latest/cmri/)
 [![Crates](https://img.shields.io/crates/v/cmri.svg)](https://crates.io/crates/cmri)
 [![Checks](https://github.com/RobertGauld/cmri-rs/actions/workflows/commit_checks-cmri.yml/badge.svg?branch=main)](https://github.com/RobertGauld/cmri-rs/actions/workflows/commit_checks-cmri.yml)
 

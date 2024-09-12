@@ -4,11 +4,11 @@ version = "0.1.0"
 edition = "2021"
 rust-version = "1.81"
 description = "Pure-Rust decoding/encoding of packets for CMRInet"
-keywords = ["CMRInet", "C/MRI", "CMRI", "model-railway"]
+keywords = ["CMRInet", "CMRI", "model-railway"]
 categories = ["no-std", "no-std::no-alloc", "network-programming"] # See: https://crates.io/category_slugs
 readme = "README.md"
 license-file = "LICENSE.md"
-repository = "https://github.com/RobertGauld/cmri-rs/cmri"
+repository = "https://github.com/RobertGauld/cmri-rs/tree/main/cmri"
 documentation = "https://docs.rs/cmri/latest/cmri"
 exclude = ["test.sh"]
 

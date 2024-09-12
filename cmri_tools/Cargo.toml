@@ -8,14 +8,14 @@ keywords = ["CMRInet", "C/MRI", "CMRI", "model-railway"]
 categories = ["network-programming"] # See: https://crates.io/category_slugs
 readme = "README.md"
 license-file = "LICENSE.md"
-repository = "https://github.com/RobertGauld/cmri-rs/cmri_tools"
+repository = "https://github.com/RobertGauld/cmri-rs/tree/main/cmri_tools"
 resolver = "2"
 
 [features]
 experimenter = ["cmri/experimenter"]
 
 [dependencies]
-cmri = { path = "../cmri", features = ["std", "serde"] }
+cmri = { version = "0.1.0", features = ["std", "serde"] }
 tokio = { version = "1.39.3", features = ["tracing", "rt-multi-thread", "sync", "time", "net", "io-util", "macros"] }
 tokio-serial = "5.4.4"
 tracing = "0.1.40"

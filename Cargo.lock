@@ -953,7 +953,7 @@ dependencies = [
 
 [[package]]
 name = "cmri"
-version = "0.0.1"
+version = "0.1.0"
 dependencies = [
  "bitflags 2.6.0",
  "log",
@@ -965,7 +965,7 @@ dependencies = [
 
 [[package]]
 name = "cmri_tools"
-version = "0.0.1"
+version = "0.1.0"
 dependencies = [
  "anyhow",
  "clap",
