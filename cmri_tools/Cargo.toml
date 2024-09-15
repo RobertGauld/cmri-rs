@@ -15,7 +15,7 @@ resolver = "2"
 experimenter = ["cmri/experimenter"]
 
 [dependencies]
-cmri = { version = "0.1.0", features = ["std", "serde"] }
+cmri = { version = "0.1.0", path = "../cmri", features = ["std", "serde"] }
 tokio = { version = "1.39.3", features = ["tracing", "rt-multi-thread", "sync", "time", "net", "io-util", "macros"] }
 tokio-serial = "5.4.4"
 tracing = "0.1.40"
