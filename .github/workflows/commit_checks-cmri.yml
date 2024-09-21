@@ -64,8 +64,6 @@ jobs:
     - uses: actions/checkout@v3
     - name: Use ${{ matrix.toolchain }} toolchain
       run: rustup default ${{ matrix.toolchain }}
-    - name: Update rust
-      run: rustup update
     - name: Run tests (no default features)
       run: cargo test --verbose ${{ matrix.features }} --no-default-features
     - name: Run tests (all features)
@@ -122,9 +120,6 @@ jobs:
     - uses: actions/checkout@v3
     - name: Use ${{ matrix.toolchain }} toolchain
       run: rustup default ${{ matrix.toolchain }}
-    - name: Update rust
-      if: matrix.toolchain == 'stable'
-      run: rustup update
     - name: Install ${{ matrix.target }} target
       run: rustup target add ${{ matrix.target }}
     - name: Build
@@ -138,7 +133,7 @@ jobs:
       fail-fast: false
       matrix:
         toolchain:
-        #- stable # the `-Z` flag is only accepted on the nightly channel of Cargo
+        - stable
         - nightly
         features:
         - "--no-default-features --features serde,experimenter" # All except std
@@ -153,9 +148,6 @@ jobs:
     - uses: actions/checkout@v3
     - name: Use ${{ matrix.toolchain }} toolchain
       run: rustup default ${{ matrix.toolchain }}
-    - name: Update rust
-      if: matrix.toolchain == 'stable'
-      run: rustup update
     - name: Add rust source component
       run: rustup component add rust-src
     - name: Build
