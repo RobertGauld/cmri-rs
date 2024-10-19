@@ -1,7 +1,7 @@
 /// The errors which can occur on decoding a frame.
 #[derive(Debug, Eq, PartialEq, thiserror::Error)]
-#[expect(clippy::module_name_repetitions)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+#[allow(clippy::module_name_repetitions)]
 pub enum DecodeError {
     /// The frame is too short.
     #[error("Frame is too short")]
@@ -35,8 +35,8 @@ pub enum DecodeError {
 
 /// The errors which can occur on receiving a frame.
 #[derive(Debug, Eq, PartialEq, thiserror::Error)]
-#[expect(clippy::module_name_repetitions)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+#[allow(clippy::module_name_repetitions)]
 pub enum ReceiveError {
     /// The frame is too short.
     #[error("Frame is too short")]

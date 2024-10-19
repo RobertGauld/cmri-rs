@@ -227,7 +227,7 @@ impl AddNode {
                                     body.row(15.0, |mut row| {
                                         row.col(|ui| { ui.with_layout(egui::Layout::right_to_left(egui::Align::Center), |ui| { ui.label("Address"); }); });
                                         row.col(|ui| {
-                                            egui::ComboBox::from_id_source("address")
+                                            egui::ComboBox::from_id_salt("address")
                                                 .show_index(ui, &mut self.address_index, available_addresses.len(), |i| format!("{:3}", available_addresses[i]));
                                         });
                                     });

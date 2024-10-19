@@ -264,14 +264,14 @@ impl State {
                 }
                 egui::Grid::new("grid").show(ui, |ui| {
                     ui.radio_value(&mut options.sort, Sort::Serial, "Serial");
-                    let serial_port = egui::ComboBox::from_id_source("serial_port")
+                    let serial_port = egui::ComboBox::from_id_salt("serial_port")
                         .selected_text(&options.serial.0)
                         .show_ui(ui, |ui| {
                             for port in &options.serial_ports {
                                 ui.selectable_value(&mut options.serial.0, port.clone(), port);
                             }
                         });
-                    let serial_baud = egui::ComboBox::from_id_source("serial_baud")
+                    let serial_baud = egui::ComboBox::from_id_salt("serial_baud")
                         .selected_text(readable::num::Unsigned::from(options.serial.1).as_str())
                         .show_ui(ui, |ui| {
                             for baud in cmri::BAUDS {

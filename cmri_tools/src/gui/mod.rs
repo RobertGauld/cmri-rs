@@ -169,9 +169,8 @@ pub fn list_of_bytes<H: std::hash::BuildHasher>(ui: &mut egui::Ui, per_row: u8, 
 
     if ui.is_rect_visible(rect) {
         let (heading_rect, bytes_rect) = rect.split_top_bottom_at_y(rect.min.y + heading_height);
-        ui.child_ui(heading_rect, egui::Layout::left_to_right(egui::Align::Min), None)
+        ui.new_child(egui::UiBuilder::new().max_rect(heading_rect))
             .heading(heading);
-
 
         let mut min = bytes_rect.min;
         for row in 0..rows {
@@ -180,7 +179,7 @@ pub fn list_of_bytes<H: std::hash::BuildHasher>(ui: &mut egui::Ui, per_row: u8, 
                 let index = (row * per_row) + i;
                 if index < count {
                     let rect = egui::Rect { min, max: min + byte_size };
-                    let mut ui = ui.child_ui(rect, egui::Layout::left_to_right(egui::Align::Min), None);
+                    let mut ui = ui.new_child(egui::UiBuilder::new().max_rect(rect));
                     byte(&mut ui, bit_size, byte_size, index, data.map(|a| &mut a[index], |a| &a[index]), labels);
                 }
                 min.x += col_and_spacing;
@@ -225,7 +224,7 @@ fn byte<H: std::hash::BuildHasher>(ui: &mut egui::Ui, bit_size: f32, byte_size: 
     }
 
     if ui.is_rect_visible(rect) {
-        ui.child_ui(top_rect, egui::Layout::centered_and_justified(egui::Direction::LeftToRight), None)
+        ui.new_child(egui::UiBuilder::new().max_rect(top_rect))
             .label(format!("Byte\u{00A0}{index:3}"))
             .on_hover_text_at_pointer(format!("{value} 0x{value:02X} 0b{value:08b}", value = value.as_ref()));
 

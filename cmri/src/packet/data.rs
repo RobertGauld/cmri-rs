@@ -126,7 +126,7 @@ impl serde::Serialize for Data {
 impl<'de> serde::Deserialize<'de> for Data {
     fn deserialize<D>(deserializer: D) -> Result<Self, D::Error> where D: ::serde::Deserializer<'de> {
         struct Visitor;
-        impl<'de> ::serde::de::Visitor<'de> for Visitor {
+        impl ::serde::de::Visitor<'_> for Visitor {
             type Value = Data;
 
             fn expecting(&self, formatter: &mut core::fmt::Formatter) -> core::fmt::Result {

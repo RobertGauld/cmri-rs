@@ -73,7 +73,7 @@ impl eframe::App for App {
             ui.spacing_mut().scroll.floating = false;
             let running = self.connection_state.modal(&self.modal, &self.tokio_handle, None, |ui| {
                 ui.label("Node address");
-                egui::ComboBox::from_id_source("node address")
+                egui::ComboBox::from_id_salt("node address")
                     .show_index(
                         ui,
                         &mut self.node_address,
