@@ -74,24 +74,33 @@ impl NodeSort {
     ///
     /// See: [`SminiConfiguration::try_new`]
     #[expect(clippy::missing_errors_doc)]
-    pub fn try_new_smini(transmit_delay: u16, oscillating_pairs: [u8; 6]) -> Result<Self, crate::node_configuration::SminiConfigurationError> {
-        Ok(Self::Smini { configuration: SminiConfiguration::try_new(transmit_delay, oscillating_pairs)? })
+    pub const fn try_new_smini(transmit_delay: u16, oscillating_pairs: [u8; 6]) -> Result<Self, crate::node_configuration::SminiConfigurationError> {
+        match SminiConfiguration::try_new(transmit_delay, oscillating_pairs) {
+            Err(err) => Err(err),
+            Ok(configuration) => Ok(Self::Smini { configuration })
+        }
     }
 
     /// Create a new CPNODE.
     ///
     /// See: [`CpnodeConfiguration::try_new`]
     #[expect(clippy::missing_errors_doc)]
-    pub fn try_new_cpnode(transmit_delay: u16, options: CpnodeOptions, input_bytes: u8, output_bytes: u8) -> Result<Self, crate::node_configuration::CpConfigurationError> {
-        Ok(Self::Cpnode { configuration: CpnodeConfiguration::try_new(transmit_delay, options, input_bytes, output_bytes)? })
+    pub const fn try_new_cpnode(transmit_delay: u16, options: CpnodeOptions, input_bytes: u8, output_bytes: u8) -> Result<Self, crate::node_configuration::CpConfigurationError> {
+        match CpnodeConfiguration::try_new(transmit_delay, options, input_bytes, output_bytes) {
+            Err(err) => Err(err),
+            Ok(configuration) => Ok(Self::Cpnode { configuration })
+        }
     }
 
     /// Create a new CPMEGA.
     ///
     /// See: [`CpmegaConfiguration::try_new`]
     #[expect(clippy::missing_errors_doc)]
-    pub fn try_new_cpmega(transmit_delay: u16, options: CpmegaOptions, input_bytes: u8, output_bytes: u8) -> Result<Self, crate::node_configuration::CpConfigurationError> {
-        Ok(Self::Cpmega { configuration: CpmegaConfiguration::try_new(transmit_delay, options, input_bytes, output_bytes)? })
+    pub const fn try_new_cpmega(transmit_delay: u16, options: CpmegaOptions, input_bytes: u8, output_bytes: u8) -> Result<Self, crate::node_configuration::CpConfigurationError> {
+        match CpmegaConfiguration::try_new(transmit_delay, options, input_bytes, output_bytes) {
+            Err(err) => Err(err),
+            Ok(configuration) => Ok(Self::Cpmega { configuration })
+        }
     }
 
     #[cfg(feature = "experimenter")]

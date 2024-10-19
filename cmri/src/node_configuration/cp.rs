@@ -16,17 +16,17 @@ impl From<Error> for crate::packet::Error {
 }
 
 macro_rules! common_implementation {
-    ($name:ident, $ndp:expr, $bits:expr) => {
+    ($name:ident, $ndp:expr, $bits_min:expr, $bits_max:expr) => {
         paste::paste! {
-            common_implementation!($name, $ndp, $bits, [<$name:camel Configuration>], [<$name:upper>]);
+            common_implementation!($name, $ndp, $bits_min, $bits_max, [<$name:camel Configuration>], [<$name:upper>]);
         }
     };
-    ($name:ident, $ndp:expr, $bits:expr, $serde_name:ident, $human_name:ident) => {
+    ($name:ident, $ndp:expr, $bits_min:expr, $bits_max:expr, $serde_name:ident, $human_name:ident) => {
         paste::paste! {
-            common_implementation!($name, $ndp, $bits, stringify!($serde_name), stringify!($human_name));
+            common_implementation!($name, $ndp, $bits_min, $bits_max, stringify!($serde_name), stringify!($human_name));
         }
     };
-    ($name:ident, $ndp:expr, $bits:expr, $serde_name:expr, $human_name:expr) => {
+    ($name:ident, $ndp:expr, $bits_min:expr, $bits_max:expr, $serde_name:expr, $human_name:expr) => {
         mod $name {
             use log::trace;
             use crate::node_configuration::NodeConfiguration;
@@ -92,11 +92,12 @@ macro_rules! common_implementation {
                 #[doc = "# Errors"]
                 #[doc = ""]
                 #[doc = concat!("[`Error::InvalidInputOutputBitsCount`] if the total number of input and output bits is invalid for a `Configuration` (", stringify!(bits), ").")]
-                pub fn try_new(transmit_delay: u16, options: Options, input_bytes: u8, output_bytes: u8) -> Result<Self, Error> {
+                pub const fn try_new(transmit_delay: u16, options: Options, input_bytes: u8, output_bytes: u8) -> Result<Self, Error> {
                     // Check input_bytes + output_bytes is not too large
-                    let bits: u16 = (u16::from(input_bytes) + u16::from(output_bytes)) * 8;
-                    if !$bits.contains(&bits) {
-                        return Err(Error::InvalidInputOutputBitsCount(bits, $bits))
+                    let bits: u16 = (input_bytes as u16 + output_bytes as u16) * 8;
+                    #[allow(unused_comparisons, reason = "Only one of the minimums is 0")]
+                    if bits < $bits_min || bits > $bits_max {
+                        return Err(Error::InvalidInputOutputBitsCount(bits, $bits_min..=$bits_max))
                     }
 
                     Ok(Self {
@@ -243,10 +244,10 @@ macro_rules! common_implementation {
     }
 }
 
-common_implementation!(cpnode, NDP_CPNODE, 16..=144);
+common_implementation!(cpnode, NDP_CPNODE, 16, 144);
 pub use cpnode::Configuration as CpnodeConfiguration;
 pub use cpnode::Options as CpnodeOptions;
-common_implementation!(cpmega, NDP_CPMEGA, 0..=192);
+common_implementation!(cpmega, NDP_CPMEGA, 0, 192);
 pub use cpmega::Configuration as CpmegaConfiguration;
 pub use cpmega::Options as CpmegaOptions;
 

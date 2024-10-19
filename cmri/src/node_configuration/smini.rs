@@ -1,6 +1,7 @@
 //! Details for SMINIs.
 
 use log::trace;
+use const_for::const_for;
 use super::NDP_SMINI;
 use crate::packet::{Data as PacketData, Error as PacketError};
 use crate::node_configuration::{NodeConfiguration, InvalidConfigurationError};
@@ -47,14 +48,11 @@ impl Configuration {
     /// # Errors
     ///
     /// [`Error::NonAdjacent`] if `oscillating_pairs` has a pair of set bits which aren't adjacent.
-    pub fn try_new(transmit_delay: u16, oscillating_pairs: [u8; 6]) -> Result<Self, Error> {
-        Ok(
-            Self {
-                transmit_delay,
-                oscillating_count: Self::get_oscillating_pairs_count(&oscillating_pairs)?,
-                oscillating_pairs
-            }
-        )
+    pub const fn try_new(transmit_delay: u16, oscillating_pairs: [u8; 6]) -> Result<Self, Error> {
+        match Self::get_oscillating_pairs_count(&oscillating_pairs) {
+            Err(err) => Err(err),
+            Ok(oscillating_count) => Ok(Self { transmit_delay, oscillating_count, oscillating_pairs })
+        }
     }
 
     /// Get the number of adjacent pairs of set bits within `oscillating_pairs`.
@@ -62,11 +60,11 @@ impl Configuration {
     /// # Errors
     ///
     /// [`Error::NonAdjacent`] if `oscillating_pairs` has a pair of set bits which aren't adjacent.
-    pub fn get_oscillating_pairs_count(oscillating_pairs: &[u8; 6]) -> Result<u8, Error> {
+    pub const fn get_oscillating_pairs_count(oscillating_pairs: &[u8; 6]) -> Result<u8, Error> {
         let check = u64::from_be_bytes([0, 0, oscillating_pairs[0], oscillating_pairs[1], oscillating_pairs[2], oscillating_pairs[3], oscillating_pairs[4], oscillating_pairs[5]]);
         let mut oscillating_count = 0;
         let mut streak = 0;
-        for i in 0..64 {
+        const_for!( i in 0..64 => {
             if check & (1 << i) > 0 {
                 // Streak of 1s has started/continued
                 oscillating_count += 1;
@@ -78,7 +76,7 @@ impl Configuration {
                 }
                 streak = 0;
             }
-        }
+        });
         Ok(oscillating_count / 2)
     }
 

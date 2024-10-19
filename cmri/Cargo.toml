@@ -23,6 +23,7 @@ serde = { version = "1.0", default-features = false, features = ["derive"], opti
 # thiserror = "0" # Use when it has no_std support, expected when https://doc.rust-lang.org/unstable-book/library-features/error-in-core.html in stable
 thiserror = { version = "2.0", package = "thiserror-no-std" }
 bitflags = "2.6"
+const_for = "0.1.5"
 paste = "1.0"
 
 [dev-dependencies]
