@@ -50,6 +50,7 @@ jobs:
         - i686-pc-windows-gnu       # 32-bit MinGW (Windows 7+)
         - i686-pc-windows-msvc      # 32-bit MSVC (Windows 7+)
         - x86_64-apple-darwin       # 64 bit macOS (10.7+, Lion+)
+        - aarch64-apple-darwin      # ARM64 macOS (11.0+, Big Sur+)
         include:
         # Add correct runner to target
         - { runner: ubuntu-latest,  target: x86_64-unknown-linux-gnu }
@@ -60,6 +61,7 @@ jobs:
         - { runner: windows-latest, target: i686-pc-windows-gnu }
         - { runner: windows-latest, target: i686-pc-windows-msvc }
         - { runner: macos-latest,   target: x86_64-apple-darwin }
+        - { runner: macos-latest,   target: aarch64-apple-darwin }
     steps:
     - uses: actions/checkout@v3
     - name: Use ${{ matrix.toolchain }} toolchain
@@ -96,7 +98,6 @@ jobs:
         - "--all-features"
         target:
         # All Tier 2 with Host Tools from https://doc.rust-lang.org/nightly/rustc/platform-support.html
-        - aarch64-apple-darwin
         - aarch64-pc-windows-msvc
         - aarch64-unknown-linux-musl
         - arm-unknown-linux-gnueabi
@@ -116,6 +117,8 @@ jobs:
         - wasm32-unknown-emscripten
         - wasm32-unknown-unknown
         - wasm32-wasip1
+        - aarch64-apple-ios-macabi
+        - x86_64-apple-ios-macabi
     steps:
     - uses: actions/checkout@v3
     - name: Use ${{ matrix.toolchain }} toolchain

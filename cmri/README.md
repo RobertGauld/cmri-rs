@@ -34,6 +34,8 @@ The ability to build is tested on nightly (at time of pushing to GitHub) rust, f
 * wasm32-unknown-emscripten
 * wasm32-unknown-unknown
 * wasm32-wasip1
+* aarch64-apple-ios-macabi
+* x86_64-apple-ios-macabi
 
 Additionally nostd building is tested for:
 
