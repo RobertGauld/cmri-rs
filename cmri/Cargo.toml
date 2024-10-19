@@ -1,6 +1,6 @@
 [package]
 name = "cmri"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2021"
 rust-version = "1.81"
 description = "Pure-Rust decoding/encoding of packets for CMRInet"
