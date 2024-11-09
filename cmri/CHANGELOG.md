@@ -1,5 +1,7 @@
 # CMRI Changelog
 
+* Uses thiserror crate instead of a nostd fork.
+
 ## 0.1.0 ⇒ 0.1.1
 
 * Addition of more const functions:
