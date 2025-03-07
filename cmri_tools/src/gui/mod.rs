@@ -1,6 +1,6 @@
 //! Shared behaviour for GUIs.
 
-use std::{collections::HashMap, ops::{BitAnd, BitOrAssign}};
+use std::{collections::HashMap, ops::{BitAnd, BitXorAssign}};
 
 pub mod connection;
 pub mod menu;
@@ -217,7 +217,7 @@ fn byte<H: std::hash::BuildHasher>(ui: &mut egui::Ui, bit_size: f32, byte_size: 
                 .find(|(_i, r)| r.contains(pos) )
                 .map(|(i, _r)| i);
             if let Some(bit) = bit {
-                value.as_mut().bitor_assign(1 << bit);
+                value.as_mut().bitxor_assign(1 << bit);
                 response.mark_changed();
             };
         }
