@@ -16,7 +16,7 @@ experimenter = ["cmri/experimenter"]
 
 [dependencies]
 cmri = { version = "0.1.1", path = "../cmri", features = ["std", "serde"] }
-tokio = { version = "1.39", features = ["tracing", "rt-multi-thread", "sync", "time", "net", "io-util", "macros"] }
+tokio = { version = "1.43", features = ["tracing", "rt-multi-thread", "sync", "time", "net", "io-util", "macros"] }
 tokio-serial = "5.4"
 tracing = "0.1.40"
 tracing-subscriber = { version = "0.3.18", default-features = false, features = ["fmt", "ansi", "env-filter", "tracing-log"] }
