@@ -16,18 +16,18 @@ experimenter = ["cmri/experimenter"]
 
 [dependencies]
 cmri = { version = "0.1.1", path = "../cmri", features = ["std", "serde"] }
-tokio = { version = "1.39", features = ["tracing", "rt-multi-thread", "sync", "time", "net", "io-util", "macros"] }
+tokio = { version = "1.44", features = ["tracing", "rt-multi-thread", "sync", "time", "net", "io-util", "macros"] }
 tokio-serial = "5.4"
-tracing = "0.1.40"
-tracing-subscriber = { version = "0.3.18", default-features = false, features = ["fmt", "ansi", "env-filter", "tracing-log"] }
+tracing = "0.1.41"
+tracing-subscriber = { version = "0.3.19", default-features = false, features = ["fmt", "ansi", "env-filter", "tracing-log"] }
 clap = { version = "4.5", features = ["cargo"] }
 anyhow = { version = "1.0", features = ["backtrace"] }
 egui = "0.30.0"
 egui_extras = "0.30.0"
 egui_plot = "0.30.0"
 egui-modal = "0.6.0"
-rfd = "0.15.2"
-dirs = "5.0"
+rfd = "0.15.3"
+dirs = "6.0"
 readable = { version = "0.16.0", features = ["num"] }
 readable_byte = "0.1.14"
 serde = { version = "1.0", features = ["derive"] }
@@ -46,7 +46,7 @@ clap_complete = "4.5"
 
 [dev-dependencies]
 tokio-test = "0.4.4"
-rand = "0.8.5"
+rand = "0.9.0"
 indoc = "2.0"
 
 [lints]
