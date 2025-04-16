@@ -17,12 +17,12 @@ impl From<Error> for crate::packet::Error {
 
 macro_rules! common_implementation {
     ($name:ident, $ndp:expr, $bits_min:expr, $bits_max:expr) => {
-        paste::paste! {
+        pastey::paste! {
             common_implementation!($name, $ndp, $bits_min, $bits_max, [<$name:camel Configuration>], [<$name:upper>]);
         }
     };
     ($name:ident, $ndp:expr, $bits_min:expr, $bits_max:expr, $serde_name:ident, $human_name:ident) => {
-        paste::paste! {
+        pastey::paste! {
             common_implementation!($name, $ndp, $bits_min, $bits_max, stringify!($serde_name), stringify!($human_name));
         }
     };

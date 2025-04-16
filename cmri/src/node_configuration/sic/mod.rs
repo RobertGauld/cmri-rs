@@ -6,12 +6,12 @@ use node_cards::{NodeCards, NodeCard, Error as NodeCardsError};
 
 macro_rules! common_implementation {
     ($name:ident, $ndp:expr, $bpc:expr) => {
-        paste::paste! {
+        pastey::paste! {
             common_implementation!($name, $ndp, $bpc, [<$name:camel Configuration>], [<$name:upper>]);
         }
     };
     ($name:ident, $ndp:expr, $bpc:expr, $serde_name:ident, $human_name:ident) => {
-        paste::paste! {
+        pastey::paste! {
             common_implementation!($name, $ndp, $bpc, stringify!($serde_name), stringify!($human_name));
         }
     };
