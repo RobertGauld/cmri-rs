@@ -147,6 +147,11 @@ jobs:
         - mips64el-unknown-linux-gnuabi64
         - mipsel-unknown-none
         - avr-unknown-gnu-atmega328
+        exclude:
+          - { toolchain: nightly, target: avr-unknown-gnu-atmega328 } # Renamed to avr-none
+        include:
+          - { target: avr-none, rustflags: "-C target-cpu=atmega328", toolchain: nightly, features: "--no-default-features --features serde,experimenter" }
+          - { target: avr-none, rustflags: "-C target-cpu=atmega328", toolchain: nightly, features: "--no-default-features" }
     steps:
     - uses: actions/checkout@v3
     - name: Use ${{ matrix.toolchain }} toolchain
@@ -154,7 +159,7 @@ jobs:
     - name: Add rust source component
       run: rustup component add rust-src
     - name: Build
-      run: cargo build -Z build-std=core --verbose --release ${{ matrix.features }} --target ${{ matrix.target }}
+      run: RUSTFLAGS="${{ matrix.rustflags }}" cargo build -Z build-std=core --verbose --release ${{ matrix.features }} --target ${{ matrix.target }}
 
   msrv:
     name: Minimum Supported Rust Version
