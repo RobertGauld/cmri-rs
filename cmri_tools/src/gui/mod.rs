@@ -1,6 +1,7 @@
 //! Shared behaviour for GUIs.
 
 use std::{collections::HashMap, ops::{BitAnd, BitXorAssign}};
+use std::fmt::Write as _;
 
 pub mod connection;
 pub mod menu;
@@ -93,7 +94,7 @@ pub fn modal_prompt(modal: &egui_modal::Modal, title: impl Into<egui::RichText>,
 /// Use an `egui_modal::Modal` to display an error, sticking with consistent dialog styling.
 pub fn modal_error(modal: &egui_modal::Modal, error: &anyhow::Error) {
     let mut details = String::new();
-    error.chain().skip(1).for_each(|cause| details.push_str(&format!("because: {cause}\n")));
+    error.chain().skip(1).for_each(|cause| { writeln!(&mut details, "because: {cause}").unwrap(); });
     modal.dialog()
         .with_title(error.to_string())
         .with_body(details.trim())
@@ -206,7 +207,7 @@ fn byte<H: std::hash::BuildHasher>(ui: &mut egui::Ui, bit_size: f32, byte_size: 
                 |label| format!("bit {bit} ({label}) {}", if value.as_ref().bitand(1 << bit) > 0 { "on" } else { "off" })
             );
             response = response.on_hover_text_at_pointer(text);
-        };
+        }
     }
 
     if value.is_mut() && response.clicked() {
@@ -219,7 +220,7 @@ fn byte<H: std::hash::BuildHasher>(ui: &mut egui::Ui, bit_size: f32, byte_size: 
             if let Some(bit) = bit {
                 value.as_mut().bitxor_assign(1 << bit);
                 response.mark_changed();
-            };
+            }
         }
     }
 

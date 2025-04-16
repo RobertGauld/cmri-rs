@@ -28,7 +28,6 @@ pub fn run_connection(mut connection: Connection, state: Arc<Mutex<State>>, toki
         let mut period = tokio::time::interval(PERIOD);
         loop {
             period.tick().await;
-            #[expect(clippy::significant_drop_in_scrutinee)]
             for i in 0..128 {
                 if let Some(node) = state.lock().await.nodes[i].as_mut() {
                     // Initialise if required

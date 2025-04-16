@@ -109,7 +109,7 @@ impl Payload{
                     let _ = raw.push(item);
                 }
             }
-        };
+        }
         raw
     }
 }

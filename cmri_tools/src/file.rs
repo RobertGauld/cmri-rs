@@ -19,7 +19,9 @@ impl File {
     /// * If the JSON can't be parsed.
     /// * If the JSON contains invalid data.
     pub fn load(path: &std::path::Path) -> anyhow::Result<Self> {
+        #[allow(clippy::unnecessary_debug_formatting, reason = "False positive: `std::path::Path` doesn't implement `std::fmt::Display`")]
         let json = std::fs::read_to_string(path).context(format!("Failed to read file {path:?}"))?;
+        #[allow(clippy::unnecessary_debug_formatting, reason = "False positive: `std::path::Path` doesn't implement `std::fmt::Display`")]
         serde_json::from_str(&json).context(format!("Failed to parse JSON in {path:?}"))
     }
 
@@ -30,6 +32,7 @@ impl File {
     /// * If the file can't be written.
     pub fn save(&self, path: &std::path::Path) -> anyhow::Result<()> {
         let json = serde_json::to_string_pretty(self).context("Failed to generate JSON")?;
+        #[allow(clippy::unnecessary_debug_formatting, reason = "False positive: `std::path::Path` doesn't implement `std::fmt::Display`")]
         std::fs::write(path, json.as_bytes()).context(format!("Failed to write file {path:?}"))
     }
 
@@ -199,12 +202,12 @@ mod tests {
     impl TempFile {
         pub fn new() -> Self {
             let dir = std::env::temp_dir();
-            let mut rng = rand::thread_rng();
+            let mut rng = rand::rng();
             let path = loop {
                 const SIZE: usize = 16;
                 let mut file = String::with_capacity(SIZE);
                 for _ in 0..SIZE {
-                    file.push(char::from(b'A' + rng.gen_range(0..26)));
+                    file.push(char::from(b'A' + rng.random_range(0..26)));
                 }
                 let mut path = dir.clone();
                 path.push(&file);

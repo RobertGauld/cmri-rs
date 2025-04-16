@@ -74,6 +74,7 @@ enum ReceiveFrameState {
 #[derive(Clone, Copy, Eq)]
 pub struct Raw {
     len: usize,
+    #[allow(clippy::struct_field_names)]
     raw: [u8; Self::MAX_LEN],
     receive_state: ReceiveFrameState,
     packet_len: usize
@@ -286,7 +287,7 @@ impl Raw {
                 escape = true;
             } else {
                 escape = false;
-                if raw_packet.push(byte).is_err() { return Err(PacketError::TooLong)? };
+                if raw_packet.push(byte).is_err() { return Err(PacketError::TooLong)? }
             }
         }
         Ok(raw_packet.try_decode()?)

@@ -32,6 +32,7 @@ impl Connection {
 
     /// Get the connection's name.
     #[must_use]
+    #[allow(clippy::missing_const_for_fn, reason = "False positive: cannot perform non-const deref coercion on `std::string::String` in constant functions")]
     pub fn name(&self) -> &str {
         &self.name
     }

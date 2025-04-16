@@ -62,7 +62,7 @@ impl NodeCards {
                     none_seen = true;
                 },
                 NodeCard::Input | NodeCard::Output => {
-                    if none_seen { return Err(Error::CardAfterNone) };
+                    if none_seen { return Err(Error::CardAfterNone) }
                     node_cards.try_push(card).expect("We've already checked there's not too many");
                 }
             }

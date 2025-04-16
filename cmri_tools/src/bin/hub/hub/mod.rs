@@ -303,7 +303,7 @@ mod tests {
         async fn write_error() {
             let frame = Packet::new_poll_request(Address::try_from_node_address(70).unwrap()).encode_frame();
             let connection = tokio_test::io::Builder::new()
-                .write_error(std::io::Error::new(std::io::ErrorKind::Other, "error"))
+                .write_error(std::io::Error::other("error"))
                 .build();
             let hub = Hub::new();
             let mut rx = hub.subscribe(String::from("subscriber")).await;
@@ -320,7 +320,7 @@ mod tests {
         #[tokio::test]
         async fn read_error() {
             let connection = tokio_test::io::Builder::new()
-                .read_error(std::io::Error::new(std::io::ErrorKind::Other, "error"))
+                .read_error(std::io::Error::other("error"))
                 .build();
             let hub = Hub::new();
             let mut rx = hub.subscribe(String::from("subscriber")).await;
