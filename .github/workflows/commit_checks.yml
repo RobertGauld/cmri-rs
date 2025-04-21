@@ -94,8 +94,9 @@ jobs:
     - name: Install cargo-audit
       run: cargo install cargo-audit --locked
     - name: Check
-      continue-on-error: true
-      run: cargo audit --deny warnings --deny unmaintained --deny unsound --deny yanked
+      run: |
+        cargo audit --deny warnings --deny unmaintained --deny unsound --deny yanked || \
+        echo "::warning title=Audit Crates::Audit of crates failed"
 
   merge-conflicts:
     name: Merge Conflicts
