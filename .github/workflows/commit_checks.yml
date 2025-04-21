@@ -98,6 +98,17 @@ jobs:
         cargo audit --deny warnings --deny unmaintained --deny unsound --deny yanked || \
         echo "::warning title=Audit Crates::Audit of crates failed"
 
+  unused-crates:
+    name: Unused Crates
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+    - uses: actions/checkout@v3
+    - name: Install cargo-shear
+      run: cargo install cargo-shear --locked
+    - name: Check
+      run: cargo shear
+
   merge-conflicts:
     name: Merge Conflicts
     runs-on: ubuntu-latest
