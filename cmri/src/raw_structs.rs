@@ -38,7 +38,7 @@ macro_rules! common_implementation {
             pub fn as_mut_slice(&mut self) -> &mut [u8] { &mut self.raw[..(self.len)] }
 
             /// Get a forward iterator.
-            pub fn iter(&self) -> core::slice::Iter<u8> {
+            pub fn iter(&self) -> core::slice::Iter<'_, u8> {
                 self.raw[..(self.len)].iter()
             }
         }

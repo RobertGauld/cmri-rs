@@ -54,16 +54,15 @@ fn main() -> anyhow::Result<()> {
         gui::run(hub, state, runtime.handle().clone());
     } else {
         loop {
-            {
-                let state = state.blocking_lock();
-                info!(
-                    "Frames: {} ({}/s)\nBytes: {} ({}/s)\nConnections:\n",
-                    readable::num::Unsigned::from(state.frames().1),
-                    readable::num::Unsigned::from(state.frames().2.last().copied().unwrap_or_default()),
-                    readable_byte::readable_byte::b(state.bytes().1).to_string_as(true),
-                    readable_byte::readable_byte::b(state.bytes().2.last().copied().unwrap_or_default().into()).to_string_as(true)
-                );
-            }
+            let state = state.blocking_lock();
+            info!(
+                "Frames: {} ({}/s)\nBytes: {} ({}/s)\nConnections:\n",
+                readable::num::Unsigned::from(state.frames().1),
+                readable::num::Unsigned::from(state.frames().2.last().copied().unwrap_or_default()),
+                readable_byte::readable_byte::b(state.bytes().1).to_string_as(true),
+                readable_byte::readable_byte::b(state.bytes().2.last().copied().unwrap_or_default().into()).to_string_as(true)
+            );
+            drop(state);
             std::thread::sleep(std::time::Duration::from_secs(1));
         }
     }

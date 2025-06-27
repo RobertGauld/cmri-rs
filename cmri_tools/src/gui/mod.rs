@@ -21,7 +21,7 @@ impl<T> MaybeMutable<'_, T> where T: std::fmt::Debug {
         matches!(self, Mutable(_))
     }
 
-    fn map<U>(&mut self, mutable: impl FnOnce(&mut T) -> &mut U, read_only: impl FnOnce(&T) -> &U) -> MaybeMutable<U> where U: std::fmt::Debug {
+    fn map<U>(&mut self, mutable: impl FnOnce(&mut T) -> &mut U, read_only: impl FnOnce(&T) -> &U) -> MaybeMutable<'_, U> where U: std::fmt::Debug {
         match self {
             Mutable(t) => Mutable(mutable(*t)),
             ReadOnly(t) => ReadOnly(read_only(*t))
@@ -94,7 +94,7 @@ pub fn modal_prompt(modal: &egui_modal::Modal, title: impl Into<egui::RichText>,
 /// Use an `egui_modal::Modal` to display an error, sticking with consistent dialog styling.
 pub fn modal_error(modal: &egui_modal::Modal, error: &anyhow::Error) {
     let mut details = String::new();
-    error.chain().skip(1).for_each(|cause| { writeln!(&mut details, "because: {cause}").unwrap(); });
+    error.chain().skip(1).for_each(|cause| { let _ = writeln!(&mut details, "because: {cause}"); });
     modal.dialog()
         .with_title(error.to_string())
         .with_body(details.trim())

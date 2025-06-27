@@ -47,7 +47,6 @@ jobs:
         - i686-unknown-linux-gnu    # 32-bit Linux (kernel 3.2+, glibc 2.17+)
         - x86_64-pc-windows-gnu     # 64-bit MinGW (Windows 7+)
         - x86_64-pc-windows-msvc    # 64-bit MSVC (Windows 7+)
-        - i686-pc-windows-gnu       # 32-bit MinGW (Windows 7+)
         - i686-pc-windows-msvc      # 32-bit MSVC (Windows 7+)
         - x86_64-apple-darwin       # 64 bit macOS (10.7+, Lion+)
         - aarch64-apple-darwin      # ARM64 macOS (11.0+, Big Sur+)
@@ -58,7 +57,6 @@ jobs:
         - { runner: ubuntu-latest,  target: i686-unknown-linux-gnu }
         - { runner: windows-latest, target: x86_64-pc-windows-gnu }
         - { runner: windows-latest, target: x86_64-pc-windows-msvc }
-        - { runner: windows-latest, target: i686-pc-windows-gnu }
         - { runner: windows-latest, target: i686-pc-windows-msvc }
         - { runner: macos-latest,   target: x86_64-apple-darwin }
         - { runner: macos-latest,   target: aarch64-apple-darwin }

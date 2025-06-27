@@ -423,11 +423,13 @@ impl App {
                     let mut string = String::with_capacity(128);
                     string.push_str("24 bit cards\n");
                     configuration.cards().chunks(4).for_each(|chunk| {
-                        chunk.iter().for_each(|card| match card {
-                            NodeCard::Input => string.push('I'),
-                            NodeCard::Output => string.push('O'),
-                            NodeCard::None => string.push('.')
-                        });
+                        for card in chunk {
+                            match card {
+                                NodeCard::Input => string.push('I'),
+                                NodeCard::Output => string.push('O'),
+                                NodeCard::None => string.push('.')
+                            }
+                        }
                         string.push(' ');
                     });
                     ui.label(string.trim());
