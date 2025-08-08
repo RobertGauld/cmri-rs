@@ -20,6 +20,9 @@ jobs:
   build:
     name: Build ${{ matrix.target }}
     runs-on: ${{ matrix.runner }}
+    environment: release
+    permissions:
+      id-token: write     # Required for OIDC token exchange
     timeout-minutes: 10
     strategy:
       fail-fast: false
@@ -28,10 +31,9 @@ jobs:
         # All Tier 1 from https://doc.rust-lang.org/nightly/rustc/platform-support.html
         - { target: "x86_64-unknown-linux-gnu",  runner: "ubuntu-latest",  command: "cargo", zip_name: "linux-x86_64.zip",   zip_label: "Linux (64 bit) kernel 3.2+, glibc 2.17+", gem_command: "sudo gem" }
         - { target: "aarch64-unknown-linux-gnu", runner: "ubuntu-latest",  command: "cross", zip_name: "linux-arm64.zip",    zip_label: "Linux (ARM64) kernel 4.1, glibc 2.17+",   gem_command: "sudo gem" }
-        - { target: "i686-unknown-linux-gnu",    runner: "ubuntu-latest",  command: "cross", zip_name: "linux-i686.zip",     zip_label: "Linux (32 bit) kernel 3.2+, glibc 2.17+", gem_command: "sudo gem" }
+        - { target: "i686-unknown-linux-gnu",    runner: "ubuntu-latest",  command: "cross", zip_name: "linux-i686.zip",     zip_label: "Linux (32 bit) kernel 3.2+, glibc 2.17+, Pentium 4", gem_command: "sudo gem" }
         - { target: "x86_64-pc-windows-msvc",    runner: "windows-latest", command: "cargo", zip_name: "windows-x86_64.zip", zip_label: "Windows 10+ / Windows Server 2016+ (64 bit)",  gem_command: "gem" }
-        - { target: "i686-pc-windows-msvc",      runner: "windows-latest", command: "cargo", zip_name: "windows-i686.zip",   zip_label: "Windows 10+ / Windows Server 2016+ (32 bit)",  gem_command: "gem" }
-        - { target: "x86_64-apple-darwin",       runner: "macos-latest",   command: "cargo", zip_name: "macos-x86_64.zip",   zip_label: "macOS (64 bit) 10.12+, Sierra+",               gem_command: "gem" }
+        - { target: "i686-pc-windows-msvc",      runner: "windows-latest", command: "cargo", zip_name: "windows-i686.zip",   zip_label: "Windows 10+ / Windows Server 2016+ (32 bit), Pentium 4",  gem_command: "gem" }
         - { target: "aarch64-apple-darwin",      runner: "macos-latest",   command: "cargo", zip_name: "macos-arm64.zip",    zip_label: "macOS (ARM64) 11.0+, Big Sur+",                gem_command: "gem" }
     steps:
     - uses: actions/checkout@v3
@@ -44,3 +46,10 @@ jobs:
       run: ${{ matrix.command }} build --bins --release --target ${{ matrix.target }}
     - name: Create & Attach zip file
       run: ${{ matrix.gem_command }} install rubyzip -v '~> 2.3' --no-document && ruby -r zip ../.github/workflows/release-cmri_tools.rb "${{ matrix.zip_name }}" "${{ matrix.zip_label }}"
+    - uses: rust-lang/crates-io-auth-action@v1
+      if: matrix.target == 'x86_64-unknown-linux-gnu'
+      id: auth
+    - run: cargo publish
+      if: matrix.target == 'x86_64-unknown-linux-gnu'
+      env:
+        CARGO_REGISTRY_TOKEN: ${{ steps.auth.outputs.token }}
