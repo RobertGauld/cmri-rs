@@ -47,7 +47,6 @@ jobs:
         - { target: i686-unknown-linux-gnu,    runner: ubuntu-latest,  command: "cross" } # 32-bit Linux
         - { target: x86_64-pc-windows-msvc,    runner: windows-latest, command: "cargo" } # 64-bit Windows
         - { target: i686-pc-windows-msvc,      runner: windows-latest, command: "cargo" } # 32-bit Windows
-        - { target: x86_64-apple-darwin,       runner: macos-latest,   command: "cargo" } # 64-bit macOS
         - { target: aarch64-apple-darwin,      runner: macos-latest,   command: "cargo" } # ARM64 macOS
     steps:
     - uses: actions/checkout@v3

@@ -202,7 +202,7 @@ impl Hub {
                                     // Peer disconnected
                                     break Ok(())
                                 }
-                                hub.errored(name.to_string(), error.to_string()).await;
+                                hub.errored(name.clone(), error.to_string()).await;
                             }
                         }
                     },
@@ -225,10 +225,10 @@ impl Hub {
             };
 
             if let Err(ref error) = result {
-                hub.errored(name.to_string(), error.to_string()).await;
+                hub.errored(name.clone(), error.to_string()).await;
             }
 
-            hub.disconnect(name.to_string()).await;
+            hub.disconnect(name.clone()).await;
             result
         })
     }

@@ -62,6 +62,7 @@ impl Options {
     ///
     /// * If a contained serial option can't be converted into a port and optional baud.
     #[must_use]
+    #[allow(clippy::useless_let_if_seq, reason="More readable without doing the compression.")]
     fn from_cli(cli_args: &clap::ArgMatches) -> OptionsResult {
         trace!("Making a ConnectionOptions from CLI arguments: {cli_args:?}");
         let mut options = Self::default();
