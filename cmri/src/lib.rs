@@ -8,6 +8,7 @@
 // #![feature(error_in_core)]
 
 // See: https://doc.rust-lang.org/unstable-book/language-features/doc-cfg.html
+#![allow(unused_features)]
 #![cfg_attr(toolchain = "nightly", feature(doc_cfg))]
 
 // See: https://doc.rust-lang.org/unstable-book/library-features/test.html

@@ -33,5 +33,5 @@ zip.close
 
 if LABEL
   puts "Uploading zip \"#{ZIP_FILE}\" with label \"#{LABEL}\""
-  system "gh release upload  --repo \"#{ENV.fetch('GITHUB_REPOSITORY')}\" \"#{ENV.fetch('GITHUB_REF_NAME')}\" \"#{ZIP_FILE}\"#\"#{LABEL}\""
+  fail unless system "gh release upload  --repo \"#{ENV.fetch('GITHUB_REPOSITORY')}\" \"#{ENV.fetch('GITHUB_REF_NAME')}\" \"#{ZIP_FILE}\"#\"#{LABEL}\""
 end

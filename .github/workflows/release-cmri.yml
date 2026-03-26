@@ -22,6 +22,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: release
     permissions:
+      contents: write     # Required to add files to release
       id-token: write     # Required for OIDC token exchange
     timeout-minutes: 10
     steps:
