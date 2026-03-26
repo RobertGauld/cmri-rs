@@ -73,11 +73,6 @@ mod tests {
             super::truncate_duration_to_millis(&Duration::from_micros(1_001)),
             Duration::from_millis(1)
         );
-
-        assert_eq!(
-            super::truncate_duration_to_millis(&Duration::from_micros(1_001)),
-            Duration::from_micros(1000)
-        );
     }
 
     #[test]
@@ -85,11 +80,6 @@ mod tests {
         assert_eq!(
             super::truncate_duration_to_micros(&Duration::from_nanos(1_001)),
             Duration::from_micros(1)
-        );
-
-        assert_eq!(
-            super::truncate_duration_to_micros(&Duration::from_nanos(1_001)),
-            Duration::from_nanos(1000)
         );
     }
 }

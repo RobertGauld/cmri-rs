@@ -378,6 +378,7 @@ impl App {
                                 ui.label(value);
                             });
                             row.col(|ui| {
+                                #[allow(clippy::manual_checked_ops)]
                                 if total_packets > 0 {
                                     ui.label(format!("{} ({}%)", readable::num::Unsigned::from(node.statistics().packets().1).as_str(), (node.statistics().packets().1 * 100) / total_packets));
                                 } else {
