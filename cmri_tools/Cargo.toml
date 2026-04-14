@@ -46,7 +46,7 @@ clap_complete = "4.5"
 
 [dev-dependencies]
 tokio-test = "0.4.4"
-rand = "0.9.0"
+rand = "0.9.3"
 indoc = "2.0"
 
 [lints]
